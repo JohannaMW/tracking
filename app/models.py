@@ -24,7 +24,7 @@ class Scooter(models.Model):
     in_use = models.BooleanField(default=False)
 
     def natural_key(self):
-        return (self.name)
+        return ((self.name, self.in_use))
 
     def __unicode__(self):
         return u"{}".format(self.name)

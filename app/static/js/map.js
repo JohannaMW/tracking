@@ -4,10 +4,18 @@ $(document).ready(function() {
     var infowindow = new google.maps.InfoWindow();
     var marker, i;
 
-    function initialize() {
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(initialize);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function initialize(position) {
         map = new google.maps.Map(document.getElementById('map_canvas'), {
-            zoom: 10,
-            center: new google.maps.LatLng(52.711171, 13.67874),
+            zoom: 15,
+            center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
     }
@@ -47,19 +55,27 @@ $(document).ready(function() {
     }, 1000);
 
     function setMarker(all_scooter) {
+        var color;
         for (i = 0; i < all_scooter.length; i++) {
+            if (all_scooter[i][1][1] == false) {
+                color = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            }
+            else {
+                color = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            }
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(all_scooter[i][0], all_scooter[i][2]),
-                map: map
+                map: map,
+                icon: color
             });
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(all_scooter[i][1]);
+                    infowindow.setContent(all_scooter[i][1][0]);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
         }
     }
-    initialize();
+    getLocation();
 });
