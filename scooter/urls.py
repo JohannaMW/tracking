@@ -20,9 +20,11 @@ urlpatterns = patterns('',
     #AJAX_calls
     url(r'^get_scooter/$', 'app.views.get_scooter', name='get_scooter'),
 
+
     #REST
     url(r'^', include(router.urls)), # Include router urls into our urlpatterns
     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^driver/(?P<rfid>[0-9]+)/(?P<scooter_id>[0-9]+)/$', 'app.api.views.driver_check'),
     )
 
 if settings.DEBUG:

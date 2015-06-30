@@ -39,8 +39,8 @@ class Position(models.Model):
 
 class Trip(models.Model):
     start = models.DateTimeField()
-    end = models.DateTimeField()
-    length = models.FloatField()
+    end = models.DateTimeField(blank=True, null=True)
+    length = models.FloatField(blank=True, null=True)
     driver = models.ForeignKey(Driver, related_name="driver")
     scooter = models.ForeignKey(Scooter, related_name="scooter")
     #minutes
