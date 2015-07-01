@@ -21,6 +21,7 @@ class UTC(tzinfo):
 
 utc = UTC()
 
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
