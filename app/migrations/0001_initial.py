@@ -64,8 +64,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('start', models.DateTimeField()),
-                ('end', models.DateTimeField()),
-                ('length', models.FloatField()),
+                ('end', models.DateTimeField(null=True, blank=True)),
+                ('length', models.FloatField(null=True, blank=True)),
                 ('driver', models.ForeignKey(related_name='driver', to=settings.AUTH_USER_MODEL)),
                 ('scooter', models.ForeignKey(related_name='scooter', to='app.Scooter')),
             ],
