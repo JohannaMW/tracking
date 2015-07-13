@@ -38,13 +38,16 @@ class DriverViewSet(viewsets.ModelViewSet):
     serializer_class = DriverSerializer
 
 def post_long_lat(request, long, lat, scooter_id):
-    try:
-        Scooter.objects.get(pk=scooter_id)
-    except Scooter.DoesNotExist:
-        return HttpResponse(status=404)
-    scooter = Scooter.objects.get(pk=scooter_id)
-    Position.objects.create(long=long, lat=lat, scooter=scooter)
-    return HttpResponse(status=200)
+    if request.method == 'GET':
+        try:
+            Scooter.objects.get(pk=scooter_id)
+        except Scooter.DoesNotExist:
+            return HttpResponse(status=404)
+        scooter = Scooter.objects.get(pk=scooter_id)
+        Position.objects.create(long=long, lat=lat, scooter=scooter)
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=400)
 
 @csrf_exempt
 def driver_check(request, rfid, scooter_id):
