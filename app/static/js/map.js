@@ -52,7 +52,7 @@ $(document).ready(function() {
                 setMarker(all_scooter);
             }
         })
-    }, 1000);
+    }, 100000000);
 
     function setMarker(all_scooter) {
         var color;
