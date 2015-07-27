@@ -48,11 +48,11 @@ $(document).ready(function() {
                     console.log(scooter);
                     all_scooter.push(scooter);
                 });
-                console.log(all_scooter);
+                console.log("All scooter" + all_scooter);
                 setMarker(all_scooter);
             }
         })
-    }, 100000000);
+    }, 1000);
 
     function setMarker(all_scooter) {
         var color;

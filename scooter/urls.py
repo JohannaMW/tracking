@@ -25,13 +25,19 @@ urlpatterns = patterns('',
     url(r'^', include(router.urls)), # Include router urls into our urlpatterns
     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^driver/(?P<rfid>[0-9]+)/(?P<scooter_id>[0-9]+)/$', 'app.api.views.driver_check'),
-    url(r'^position/(?P<long>\d+\.\d{6})/(?P<lat>\d+\.\d{6})/(?P<scooter_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
+    url(r'^position/(?P<long>\d+\.\d{2})/(?P<lat>\d+\.\d{2})/(?P<scooter_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
 
 
     #USER HANDLING
     url(r'^register/$', 'app.views.register', name='register'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+
+
+    #SIDES
+    url(r'^profile/$', 'app.views.profile', name='profile'),
+    url(r'^update/$', 'app.views.update', name='update'),
+
     )
 
 if settings.DEBUG:

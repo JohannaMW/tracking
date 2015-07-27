@@ -1,0 +1,44 @@
+{% extends 'base_template.html' %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Your Trips <span class="sr-only">(current)</span></a></li>
+            <li><a href="{% url 'update' %}">Profile</a></li>
+            <li><a href="#">Account History</a></li>
+            <li><a href="#">Redeem voucher</a></li>
+          </ul>
+    </div>
+
+{% for trip in trips %}
+        <div class="col-md-8 col-xs-12">
+        <h2>Your trips</h2>
+            <table class="table" >
+                <thead>
+                <tr>
+                <th>ID</th>
+                <th>Scooter</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Duration</th>
+                <th>Amount</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>{{ trip.id }}</td>
+                    <td>{{ trip.scooter.name }}</td>
+                    <td>{{ trip.start }}</td>
+                    <td>{{ trip.end }}</td>
+                    <td>{{ trip.length }}</td>
+                    <td>Amount</td>
+                </tr>
+             </table>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}

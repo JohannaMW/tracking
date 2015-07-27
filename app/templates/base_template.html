@@ -29,6 +29,7 @@
 
     <!--- Controllers --->
     <script src="{% static "js/controllers/homeController.js" %}"></script>
+    <script src="{% static "js/controllers/userController.js" %}"></script>
 
     <!-- CSS -->
     <script src="{% static "css/reset.css" %}"></script>
@@ -54,7 +55,8 @@
 
                   <ul class="nav navbar-nav navbar-right">
                       {% if user.is_authenticated %}
-                        <a href="{% url 'logout' %}">Logout</a></li>
+                          <li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                         {% else %}
                         <li><a href="{% url 'login' %}">Login</a></li>
                         <li><a href="{% url 'register' %}">Register</a></li>
