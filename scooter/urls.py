@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^', include(router.urls)), # Include router urls into our urlpatterns
     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^driver/(?P<rfid>[0-9]+)/(?P<scooter_id>[0-9]+)/$', 'app.api.views.driver_check'),
-    url(r'^position/(?P<long>\d+\.\d{2})/(?P<lat>\d+\.\d{2})/(?P<scooter_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
+    url(r'^position/(?P<long>\d+\.\d{6})/(?P<lat>\d+\.\d{6})/(?P<scooter_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
 
 
     #USER HANDLING
