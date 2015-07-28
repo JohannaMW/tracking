@@ -13,17 +13,12 @@ def home(request):
     return render(request, 'home.html')
 
 def get_scooter(request):
-    d = datetime.datetime.now() - datetime.timedelta(seconds=2)
-    print d
     all_scooter = Scooter.objects.all()
     positions = []
     for s in all_scooter:
-        position = Position.objects.get(id=s.id, time=d)
+        position = Position.objects.filter(scooter=s.id).order_by('-time')[0]
         print position
         positions.append(position)
-    #scooter = Scooter.objects.get(time=current_date_time)
-    #positions = Position.objects.all()
-    #data = json.dumps(positions)
     data = serializers.serialize('json', positions, use_natural_keys=True)
     return HttpResponse(data, content_type='application/json')
 
