@@ -82,6 +82,9 @@ def route(request, name):
     all_positions = []
     try:
         positions = Position.objects.filter(vehicle=vehicle.id)
+        latest_position = Position.objects.filter(vehicle=vehicle.id).latest("id")
+        latest_position_long = latest_position.long
+        latest_position_lat = latest_position.lat
         for position in positions:
             position_array = [position.lat, position.long]
             all_positions.append(position_array)
@@ -90,5 +93,7 @@ def route(request, name):
         positions = None
     return render(request, "route.html", {
         'positions': positions,
-        'all_positions': all_positions
+        'all_positions': all_positions,
+        'latest_position_long': latest_position_long,
+        'latest_position_lat': latest_position_lat
     })
