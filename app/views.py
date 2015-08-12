@@ -92,6 +92,7 @@ def route(request, name):
     except Position.DoesNotExist:
         positions = None
     return render(request, "route.html", {
+        'name': name,
         'positions': positions,
         'all_positions': all_positions,
         'latest_position_long': latest_position_long,
