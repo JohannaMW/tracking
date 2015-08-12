@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Driver',
+            name='Owner',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('password', models.CharField(max_length=128, verbose_name='password')),
@@ -52,30 +52,17 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Scooter',
+            name='Vehicle',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100)),
-                ('in_use', models.BooleanField(default=False)),
+                ('in_use', models.BooleanField(default=True)),
+                ('owner', models.ForeignKey(related_name='driven_vehicle', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
-        ),
-        migrations.CreateModel(
-            name='Trip',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('start', models.DateTimeField()),
-                ('end', models.DateTimeField(null=True, blank=True)),
-                ('length', models.FloatField(null=True, blank=True)),
-                ('driver', models.ForeignKey(related_name='driver', to=settings.AUTH_USER_MODEL)),
-                ('scooter', models.ForeignKey(related_name='scooter', to='app.Scooter')),
-            ],
-            options={
-                'ordering': ('start',),
-            },
         ),
         migrations.AddField(
             model_name='position',
-            name='scooter',
-            field=models.ForeignKey(related_name='position', to='app.Scooter'),
+            name='vehicle',
+            field=models.ForeignKey(related_name='position', to='app.Vehicle'),
         ),
     ]

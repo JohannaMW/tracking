@@ -8,23 +8,20 @@ LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 
 
-class Driver(AbstractUser):
+class Owner(AbstractUser):
     rfid = models.BigIntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u"{}".format(self.username)
 
 
-class Scooter(models.Model):
-    name = models.CharField(max_length=100)
-    #lat = models.FloatField()
-    #long = models.FloatField()
-    #driver = models.ForeignKey(Driver, blank=True, null=True, related_name="driven_scooter")
-    #time = models.DateTimeField(auto_now=True)
-    in_use = models.BooleanField(default=False)
+class Vehicle(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    owner = models.ForeignKey(Owner, blank=True, null=True, related_name="driven_vehicle")
+    in_use = models.BooleanField(default=True)
 
     def natural_key(self):
-        return ((self.name, self.in_use))
+        return ((self.name))
 
     def __unicode__(self):
         return u"{}".format(self.name)
@@ -34,19 +31,5 @@ class Position(models.Model):
     lat = models.FloatField()
     long = models.FloatField()
     time = models.DateTimeField(auto_now=True)
-    scooter = models.ForeignKey(Scooter, related_name="position")
-
-
-class Trip(models.Model):
-    start = models.DateTimeField()
-    end = models.DateTimeField(blank=True, null=True)
-    length = models.FloatField(blank=True, null=True)
-    driver = models.ForeignKey(Driver, related_name="driver")
-    scooter = models.ForeignKey(Scooter, related_name="scooter")
-    #minutes
-
-    def __unicode__(self):
-        return u"{}".format(self.start)
-
-    class Meta:
-        ordering = ('start',)
+    address = models.CharField(max_length=300, blank=True, null=True)
+    vehicle = models.ForeignKey(Vehicle, related_name="position")

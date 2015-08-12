@@ -1,5 +1,5 @@
 """
-WSGI config for scooter project.
+WSGI config for vehicle project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

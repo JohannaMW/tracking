@@ -7,9 +7,8 @@ from django.conf.urls.static import static
 from app.api.views import *
 
 router = routers.DefaultRouter()
-router.register(r'driver', DriverViewSet, base_name='drivers')
-router.register(r'scooter', ScooterViewSet, base_name='scooters')
-router.register(r'trip', TripViewSet, base_name='trips')
+router.register(r'owner', OwnerViewSet, base_name='drivers')
+router.register(r'vehicle', VehicleViewSet, base_name='vehicles')
 router.register(r'position', PositionViewSet, base_name='positions')
 
 urlpatterns = patterns('',
@@ -18,14 +17,13 @@ urlpatterns = patterns('',
     url(r'^$', 'app.views.home', name="home"),#
 
     #AJAX_calls
-    url(r'^get_scooter/$', 'app.views.get_scooter', name='get_scooter'),
+    url(r'^get_vehicle/$', 'app.views.get_vehicle', name='get_vehicle'),
 
 
     #REST
     url(r'^', include(router.urls)), # Include router urls into our urlpatterns
     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^driver/(?P<rfid>[0-9]+)/(?P<scooter_id>[0-9]+)/$', 'app.api.views.driver_check'),
-    url(r'^position/(?P<long>\d+\.\d{6})/(?P<lat>\d+\.\d{6})/(?P<scooter_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
+    url(r'^position/(?P<long>\d+\.\d{6})/(?P<lat>\d+\.\d{6})/(?P<vehicle_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
 
 
     #USER HANDLING
@@ -37,6 +35,7 @@ urlpatterns = patterns('',
     #SIDES
     url(r'^profile/$', 'app.views.profile', name='profile'),
     url(r'^update/$', 'app.views.update', name='update'),
+    url(r'^route/(?P<name>[\w\-]+)/$', 'app.views.route', name='route'),
 
     )
 

@@ -1,7 +1,7 @@
 function userController($scope, $http, $routeParams, $location) {
     var userId = $routeParams.id;
 
-    $http.get('/driver/' + userId + '').
+    $http.get('/owner/' + userId + '').
         success(function (data) {
             $scope.driver = data;
             console.log(data);
