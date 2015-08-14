@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'app',
     'rest_framework',
     'bootstrapform',
+    'bootstrap3_datepicker',
 )
 
 MIDDLEWARE_CLASSES = (

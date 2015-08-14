@@ -7,6 +7,8 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Vehicle Tracker</title>
+       <!-- jQuery -->
+    <script src="{% static "js/vendors/jquery-2.1.4.min.js" %}"></script>
         <!-- CSS -->
     <script src="{% static "css/reset.css" %}"></script>
     <script src="{% static "css/style.css" %}"></script>
@@ -41,20 +43,29 @@
             </div>
       <div class="container">
     <h2>{{ name }}</h2>
+      <button id="mapView">Karte</button>
+          <button id="tableView">Tabelle</button>
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
       <div id="table">
       <table class="table" >
                 <thead>
                 <tr>
-                <th>Time</th>
+                    <th>Datum</th>
+                <th>Zeit</th>
                     <th>Longitude</th>
                     <th>Latitude</th>
-                    <th>Address</th>
+                    <th>Adresse</th>
 
                 </tr>
                 </thead>
                 {% for position in positions %}
 
                 <tr>
+                    <td>{{ position.date }}</td>
                     <td>{{ position.time }}</td>
                     <td>{{ position.long }}</td>
                     <td>{{ position.lat }}</td>
@@ -70,10 +81,19 @@
         </div>
 
     <script>
+    $(document).ready(function(){
+        $("#map_canvas").show();
+        $("#table").hide();
+    $("#mapView").click(function(){
+        $("#map_canvas").show();
+        $("#table").hide();
+    });
+    $("#tableView").click(function(){
+        $("#table").show();
+        $("#map_canvas").hide();
+    });
+    });
 
-// This example creates a 2-pixel-wide red polyline showing the path of William
-// Kingsford Smith's first trans-Pacific flight between Oakland, CA, and
-// Brisbane, Australia.
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map_canvas'), {

@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from app.models import Position, Owner, Vehicle
-from app.forms import OwnerForm
+from app.forms import OwnerForm, DateForm
 from django.core import serializers
 
 def home(request):
@@ -79,6 +79,14 @@ def profile(request):
 
 def route(request, name):
     vehicle = Vehicle.objects.get(name=name)
+    if request.method == 'POST':
+        form = DateForm(request.POST)
+        if form.is_valid():
+            from_date = form.cleaned_data['from_date']
+            to_date = form.cleaned_data['to_date']
+            return HttpResponseRedirect('/position/{}/{}/{}'.format(vehicle.id, from_date, to_date))
+    else:
+        form = DateForm()
     all_positions = []
     try:
         positions = Position.objects.filter(vehicle=vehicle.id)
@@ -93,6 +101,42 @@ def route(request, name):
         positions = None
     return render(request, "route.html", {
         'name': name,
+        'positions': positions,
+        'all_positions': all_positions,
+        'latest_position_long': latest_position_long,
+        'latest_position_lat': latest_position_lat,
+        'form': form
+    })
+
+def position_list(request, vehicle, from_date, to_date):
+    """
+    Retrieve Positions for selectes time frame
+    """
+    vehicle = Vehicle.objects.get(pk=vehicle)
+    all_positions = []
+    if request.method == 'POST':
+        form = DateForm(request.POST)
+        if form.is_valid():
+            from_date = form.cleaned_data['from_date']
+            to_date = form.cleaned_data['to_date']
+            return HttpResponseRedirect('/position/{}/{}/{}'.format(vehicle.id, from_date, to_date))
+    else:
+        form = DateForm()
+    try:
+        positions = Position.objects.filter(vehicle=vehicle, date__range=(from_date, to_date))
+        latest_position = positions.latest("id")
+        latest_position_long = latest_position.long
+        latest_position_lat = latest_position.lat
+        print positions
+        for position in positions:
+            position_array = [position.lat, position.long]
+            all_positions.append(position_array)
+        print all_positions
+    except Position.DoesNotExist:
+        positions = None
+    return render(request, "route.html", {
+        'form': form,
+        'name': vehicle.name,
         'positions': positions,
         'all_positions': all_positions,
         'latest_position_long': latest_position_long,

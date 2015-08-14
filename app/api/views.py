@@ -1,7 +1,19 @@
 from django.http import HttpResponse
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.renderers import JSONRenderer
 from app.api.serializers import *
 from geopy.geocoders import Nominatim
+
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 geolocator = Nominatim()
 
@@ -44,3 +56,18 @@ class VehicleViewSet(viewsets.ModelViewSet):
 class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
+
+
+@api_view(['GET'])
+def position_list(request, vehicle, from_date, to_date):
+    """
+    Retrieve Positions for selectes time frame
+    """
+    try:
+        positions = Position.objects.filter(vehicle=vehicle)
+        print positions
+    except Position.DoesNotExist:
+        return HttpResponse(404)
+    serializer = PositionSerializer
+    return JSONResponse(serializer.data)
+

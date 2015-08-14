@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     url(r'^app-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^position/(?P<long>\d+\.\d{6})/(?P<lat>\d+\.\d{6})/(?P<vehicle_id>[0-9]+)/$', 'app.api.views.post_long_lat'),
 
-
     #USER HANDLING
     url(r'^register/$', 'app.views.register', name='register'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
@@ -36,6 +35,9 @@ urlpatterns = patterns('',
     url(r'^profile/$', 'app.views.profile', name='profile'),
     url(r'^update/$', 'app.views.update', name='update'),
     url(r'^route/(?P<name>[\w\-]+)/$', 'app.views.route', name='route'),
+    url(r'^position/(?P<vehicle>\d+)/(?P<from_date>\d{4}-\d{2}-\d{2})/(?P<to_date>\d{4}-\d{2}-\d{2})/$',
+        'app.views.position_list'),
+
 
     )
 

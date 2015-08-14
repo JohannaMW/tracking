@@ -30,6 +30,7 @@ class Vehicle(models.Model):
 class Position(models.Model):
     lat = models.FloatField()
     long = models.FloatField()
-    time = models.DateTimeField(auto_now=True)
+    date = models.DateField(auto_now=True, blank=True, null=True)
+    time = models.TimeField(auto_now=True, blank=True, null=True)
     address = models.CharField(max_length=300, blank=True, null=True)
     vehicle = models.ForeignKey(Vehicle, related_name="position")
