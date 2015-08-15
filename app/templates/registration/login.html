@@ -5,9 +5,10 @@
     <form method="post" action=".">
         {% csrf_token %}
         {{ form|bootstrap }}
+<button type="submit" value="Log in" class="btn btn-primary" aria-label="Left Align">
+  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Login
+</button>
 
-        <input type="submit" value="Log in">
-    </form>
 
     <p>Not member? <a href="{% url 'register' %}">Register!</a></p>
 {% endblock %}

@@ -1,3 +1,39 @@
 body {
-    background-color:  #6D6EFF !important;
+    background-color: #FBF8FF;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #555558;
+}
+
+
+.navbar-default {
+    background-color:  #9193FF !important;
+}
+
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: white;
+
+}
+
+.btn-primary {
+    background-color:  #9193FF !important;
+    border-color: #9193FF !important;
+}
+
+.btn-warning {
+    background-color:  #FFE796 !important;
+    border-color: #FFE796 !important;
+}
+
+.my_sidebar>ul>li>a {
+    background-color:  #FFE796 !important;
+    margin-top: 10px;
+    color: #424245;
+}
+
+.my_sidebar {
+
 }

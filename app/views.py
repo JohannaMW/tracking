@@ -134,6 +134,8 @@ def position_list(request, vehicle, from_date, to_date):
         print all_positions
     except Position.DoesNotExist:
         positions = None
+        latest_position_long = None
+        latest_position_lat = None
     return render(request, "route.html", {
         'form': form,
         'name': vehicle.name,

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from app.models import Owner
-from bootstrap3_datepicker.widgets import DatePickerInput
+from django.forms import ModelForm
 
 class OwnerForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -11,5 +11,5 @@ class OwnerForm(UserCreationForm):
 
 
 class DateForm(forms.Form):
-    from_date = forms.DateField(widget=DatePickerInput, label='from')
-    to_date = forms.DateField(widget=DatePickerInput, label='to')
+    from_date = forms.DateField(label='from')
+    to_date = forms.DateField(label='to')

@@ -9,11 +9,16 @@
     <title>Vehicle Tracker</title>
        <!-- jQuery -->
     <script src="{% static "js/vendors/jquery-2.1.4.min.js" %}"></script>
-        <!-- CSS -->
-    <script src="{% static "css/reset.css" %}"></script>
-    <script src="{% static "css/style.css" %}"></script>
+
       <!--Bootstrap -->
+    <script src="{% static "js/vendors/angular-ui/ui-bootstrap-tpls-0.11.2.min.js" %}"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+      <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
   </head>
   <body>
   <div class="bs-component">
@@ -43,12 +48,24 @@
             </div>
       <div class="container">
     <h2>{{ name }}</h2>
-      <button id="mapView">Karte</button>
-          <button id="tableView">Tabelle</button>
+          <button id="mapView" class="btn btn-primary">
+            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Karte
+          </button>
+
+            <button id="tableView" class="btn btn-primary" >
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabelle
+          </button>
+
 <form method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
+    <p><label for="id_from_date">Von:</label>
+    <input id="id_subject" type="date" name="from_date"  /></p>
+<p><label for="id_to_date">Bis:</label>
+    <input type="date" name="to_date" id="id_to_date" /></p>
+    <button type="submit" id="mapView" class="btn btn-warning">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Go!
+          </button>
+
 </form>
       <div id="table">
       <table class="table" >
