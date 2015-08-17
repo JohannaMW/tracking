@@ -55,6 +55,7 @@ $(document).ready(function() {
     }, 1000);
 
     function setMarker(all_vehicle) {
+        console.log("in setMarker" );
         var color;
         for (i = 0; i < all_vehicle.length; i++) {
             if (all_vehicle[i][1][1] == false) {
@@ -63,15 +64,18 @@ $(document).ready(function() {
             else {
                 color = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
             }
+            console.log("All vehicle:" + all_vehicle);
+            console.log("Latitude:" + all_vehicle[i][2]);
+            console.log("Longitude:" + all_vehicle[i][1]);
             marker = new google.maps.Marker({
-                position: new google.maps.LatLng(all_vehicle[i][0], all_vehicle[i][2]),
+                position: new google.maps.LatLng(all_vehicle[i][2], all_vehicle[i][1]),
                 map: map,
                 icon: color
             });
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(all_vehicle[i][1][0]);
+                    infowindow.setContent(all_vehicle[i][0]);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
