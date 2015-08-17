@@ -5,6 +5,14 @@ from django.template import RequestContext
 from app.models import Position, Owner, Vehicle
 from app.forms import OwnerForm, DateForm
 from django.core import serializers
+from django.db.models.loading import get_model
+from django.db.models import BooleanField
+from django.http import Http404, HttpResponse
+from django.shortcuts import render_to_response
+from django.template.defaultfilters import yesno
+import csv
+
+__all__ = ( 'spreadsheet', )
 
 def home(request):
     return render(request, 'home.html')
@@ -78,6 +86,8 @@ def profile(request):
     })
 
 def route(request, name):
+    app = "app"
+    model = "vehicle"
     vehicle = Vehicle.objects.get(name=name)
     if request.method == 'POST':
         form = DateForm(request.POST)
@@ -105,7 +115,9 @@ def route(request, name):
         'all_positions': all_positions,
         'latest_position_long': latest_position_long,
         'latest_position_lat': latest_position_lat,
-        'form': form
+        'form': form,
+        'app': app,
+        'model': model
     })
 
 def position_list(request, vehicle, from_date, to_date):
@@ -144,3 +156,38 @@ def position_list(request, vehicle, from_date, to_date):
         'latest_position_long': latest_position_long,
         'latest_position_lat': latest_position_lat
     })
+
+def _field_extractor_function(field):
+    """Return a function that extracts a given field from an instance of a model."""
+    if field.choices:
+        return (lambda o: getattr(o, 'get_%s_display' % field.name)())
+    elif isinstance(field, BooleanField):
+        return (lambda o: yesno(getattr(o, field.name), "Yes,No"))
+    else:
+        return (lambda o: str(getattr(o, field.name)))
+
+
+def spreadsheet(request, app_label, model_name):
+    """Return a CSV file for this table."""
+
+    # Get the fields of the table
+    model = get_model(app_label, model_name)
+    if not model:
+        raise Http404
+    fields = model._meta.fields
+    field_funcs = [ _field_extractor_function(f) for f in fields ]
+
+    # set the HttpResponse
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=%s-%s.csv' % (app_label, model_name)
+    writer = csv.writer(response, quoting=csv.QUOTE_ALL)
+
+    # Write the header of the CSV file
+    writer.writerow([ f.verbose_name for f in fields ])
+
+    # Write all rows of the CSV file
+    for o in model.objects.all():
+        writer.writerow([ func(o) for func in field_funcs ])
+
+    # All done
+    return response

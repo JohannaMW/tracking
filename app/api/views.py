@@ -71,3 +71,4 @@ def position_list(request, vehicle, from_date, to_date):
     serializer = PositionSerializer
     return JSONResponse(serializer.data)
 
+
