@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
@@ -11,6 +12,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
 from django.template.defaultfilters import yesno
 import csv
+import unicodecsv
 
 __all__ = ( 'spreadsheet', )
 
@@ -157,37 +159,61 @@ def position_list(request, vehicle, from_date, to_date):
         'latest_position_lat': latest_position_lat
     })
 
-def _field_extractor_function(field):
-    """Return a function that extracts a given field from an instance of a model."""
-    if field.choices:
-        return (lambda o: getattr(o, 'get_%s_display' % field.name)())
-    elif isinstance(field, BooleanField):
-        return (lambda o: yesno(getattr(o, field.name), "Yes,No"))
-    else:
-        return (lambda o: str(getattr(o, field.name)))
-
-
-def spreadsheet(request, app_label, model_name):
-    """Return a CSV file for this table."""
-
-    # Get the fields of the table
-    model = get_model(app_label, model_name)
-    if not model:
-        raise Http404
-    fields = model._meta.fields
-    field_funcs = [ _field_extractor_function(f) for f in fields ]
-
-    # set the HttpResponse
+def export_csv_date(request, vehicle, from_date, to_date):
+    import csv
+    from django.utils.encoding import smart_str
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=%s-%s.csv' % (app_label, model_name)
-    writer = csv.writer(response, quoting=csv.QUOTE_ALL)
-
-    # Write the header of the CSV file
-    writer.writerow([ f.verbose_name for f in fields ])
-
-    # Write all rows of the CSV file
-    for o in model.objects.all():
-        writer.writerow([ func(o) for func in field_funcs ])
-
-    # All done
+    vehicle = Vehicle.objects.get(id=vehicle)
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(vehicle.name)
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    queryset = Position.objects.filter(vehicle=vehicle, date__range=(from_date, to_date))
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Datum"),
+        smart_str(u"Zeit"),
+        smart_str(u"Latitude"),
+        smart_str(u"Longitude"),
+        smart_str(u"Adresse"),
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.id),
+            smart_str(obj.date),
+            smart_str(obj.time),
+            smart_str(obj.lat),
+            smart_str(obj.long),
+            smart_str(obj.address),
+        ])
     return response
+
+
+def export_csv(request, name):
+    import csv
+    from django.utils.encoding import smart_str
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(name)
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    vehicle = Vehicle.objects.get(name=name)
+    queryset = Position.objects.filter(vehicle=vehicle.id)
+    writer.writerow([
+        smart_str(u"ID"),
+        smart_str(u"Datum"),
+        smart_str(u"Zeit"),
+        smart_str(u"Latitude"),
+        smart_str(u"Longitude"),
+        smart_str(u"Adresse"),
+    ])
+    for obj in queryset:
+        writer.writerow([
+            smart_str(obj.id),
+            smart_str(obj.date),
+            smart_str(obj.time),
+            smart_str(obj.lat),
+            smart_str(obj.long),
+            smart_str(obj.address),
+        ])
+    return response
+export_csv.short_description = u"Export CSV"
+

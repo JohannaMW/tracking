@@ -37,9 +37,10 @@ urlpatterns = patterns('',
     url(r'^route/(?P<name>[\w\-]+)/$', 'app.views.route', name='route'),
     url(r'^position/(?P<vehicle>\d+)/(?P<from_date>\d{4}-\d{2}-\d{2})/(?P<to_date>\d{4}-\d{2}-\d{2})/$',
         'app.views.position_list'),
-    url(r"^csv/(?P<app_label>\w+)/(?P<model_name>\w+)/$",
-        "app.views.spreadsheet", name='spreadsheet'), # Return a CSV file for this model
-
+    url(r"^csv/route/(?P<name>[\w\-]+)/$",
+        "app.views.export_csv", name='export_csv'), # Return a CSV file for this model
+    url(r"^csv/position/(?P<vehicle>\d+)/(?P<from_date>\d{4}-\d{2}-\d{2})/(?P<to_date>\d{4}-\d{2}-\d{2})/$",
+        "app.views.export_csv_date", name='export_csv_date'), # Return a CSV file for this model
 
 
     )
