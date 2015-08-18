@@ -7,15 +7,16 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Vehicle Tracker</title>
-       <!-- jQuery -->
+       <!-- jQuery and JS -->
     <script src="{% static "js/vendors/jquery-2.1.4.min.js" %}"></script>
-
+    <script src="{% static "js/datepicker.js" %}"></script>
       <!--Bootstrap -->
     <script src="{% static "js/vendors/angular-ui/ui-bootstrap-tpls-0.11.2.min.js" %}"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
       <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/datepicker.css" %}">
 
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
@@ -58,20 +59,45 @@
 
 <form method="post">
     {% csrf_token %}
+    <div class="row" style="margin-top: 30px;">
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
     <p><label for="id_from_date">Von:</label>
-    <input id="id_subject" type="date" name="from_date"  /></p>
-<p><label for="id_to_date">Bis:</label>
-    <input type="date" name="to_date" id="id_to_date" /></p>
+    <input class="datepicker from_date" id="id_subject" type="text" name="from_date"  /></p>
+</div>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+    <p><label for="id_to_date">Bis:</label>
+    <input class="datepicker to_date" type="text" name="to_date" id="id_to_date" />
+    </p>
+        </div>
+
+    <script type="text/javascript">
+    $(".from_date").datepicker({
+        format: 'yyyy-mm-dd'
+    });
+
+         $(".to_date").datepicker({
+        format: 'yyyy-mm-dd'
+    });
+    </script>
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px">
     <button type="submit" id="mapView" class="btn btn-warning">
-            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Go!
-          </button>
-<div class="row">
-    <div style="float: right">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Go!
+    </button>
+    </div>
+
+    <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px">
+
+    <div >
     <a href="http://127.0.0.1:8000/csv{{ request.path }} " target="_blank">Download als CSV
          </a>
         </div>
+
 </div>
+    </div>
 </form>
+
+
+
       <div id="table">
       <table class="table" >
                 <thead>

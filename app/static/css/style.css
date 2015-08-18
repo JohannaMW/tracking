@@ -6,30 +6,21 @@ body {
 
 
 .navbar-default {
-    background-color:  #9193FF !important;
-}
-
-.navbar-default .navbar-brand {
-    color: white;
-}
-
-.navbar-default .navbar-nav>li>a {
-    color: white;
-
+    background-color:  #cadfaa !important;
 }
 
 .btn-primary {
-    background-color:  #9193FF !important;
-    border-color: #9193FF !important;
+    background-color:  #4585f2  !important;
+    border-color: #4585f2  !important;
 }
 
 .btn-warning {
-    background-color:  #FFE796 !important;
-    border-color: #FFE796 !important;
+    background-color:  #fa9e25  !important;
+    border-color: #fa9e25  !important;
 }
 
 .my_sidebar>ul>li>a {
-    background-color:  #FFE796 !important;
+    background-color:  #ffe168 !important;
     margin-top: 10px;
     color: #424245;
 }
