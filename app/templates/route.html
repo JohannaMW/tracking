@@ -49,6 +49,9 @@
             </div>
       <div class="container">
     <h2>{{ name }}</h2>
+      {% if latest_position_long == None %}
+     <div>Leider wurden für dieses Fahrzeug noch keine Positionsdaten gespeichert.</div>
+      {% else %}
           <button id="mapView" class="btn btn-primary">
             <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Karte
           </button>
@@ -56,6 +59,7 @@
             <button id="tableView" class="btn btn-primary" >
             <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Tabelle
           </button>
+
 
 <form method="post">
     {% csrf_token %}
@@ -169,6 +173,7 @@ function initMap() {
     </script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"></script>
+      {% endif %}
       </div>
   </body>
 </html>
