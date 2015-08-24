@@ -17,7 +17,7 @@ class Owner(AbstractUser):
 
 
 class Vehicle(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=200)
     owner = models.ForeignKey(Owner, blank=True, null=True, related_name="driven_vehicle")
     in_use = models.BooleanField(default=True)
 

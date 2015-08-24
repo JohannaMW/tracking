@@ -69,7 +69,7 @@ def profile(request):
             vehicle_data = {}
             try:
                 position = Position.objects.filter(vehicle=vehicle.id).latest("id")
-                vehicle_data[vehicle.name] = position.address
+                vehicle_data[vehicle.id, vehicle.name] = position.address
             except Position.DoesNotExist:
                 pass
             print vehicle_data
@@ -81,10 +81,10 @@ def profile(request):
         'vehicles': owner_vehicles
     })
 
-def route(request, name):
+def route(request, id):
     app = "app"
     model = "vehicle"
-    vehicle = Vehicle.objects.get(name=name)
+    vehicle = Vehicle.objects.get(id=id)
     if request.method == 'POST':
         form = DateForm(request.POST)
         if form.is_valid():
@@ -106,7 +106,7 @@ def route(request, name):
     except Position.DoesNotExist:
         positions = None
     return render(request, "route.html", {
-        'name': name,
+        'name': vehicle.name,
         'positions': positions,
         'all_positions': all_positions,
         'latest_position_long': latest_position_long,
@@ -182,14 +182,14 @@ def export_csv_date(request, vehicle, from_date, to_date):
     return response
 
 
-def export_csv(request, name):
+def export_csv(request, id):
     import csv
     from django.utils.encoding import smart_str
+    vehicle = Vehicle.objects.get(id=id)
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(name)
+    response['Content-Disposition'] = 'attachment; filename={}.csv'.format(vehicle.name)
     writer = csv.writer(response, csv.excel)
     response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
-    vehicle = Vehicle.objects.get(name=name)
     queryset = Position.objects.filter(vehicle=vehicle.id)
     writer.writerow([
         smart_str(u"ID"),

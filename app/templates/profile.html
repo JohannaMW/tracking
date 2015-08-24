@@ -25,7 +25,7 @@
                     {% for key, value in vehicle.items %}
 
                 <tr>
-                    <td><a href={% url 'route' key  %}>{{ key }}</a></td>
+                    <td><a href={% url 'route' key.0  %}>{{ key.1 }}</a></td>
                     <td>{{ value }}</td>
                 </tr>
                 {% endfor %}
