@@ -6,13 +6,7 @@ from django.template import RequestContext
 from app.models import Position, Owner, Vehicle
 from app.forms import OwnerForm, DateForm
 from django.core import serializers
-from django.db.models.loading import get_model
-from django.db.models import BooleanField
-from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response
-from django.template.defaultfilters import yesno
-import csv
-import unicodecsv
+
 
 __all__ = ( 'spreadsheet', )
 
