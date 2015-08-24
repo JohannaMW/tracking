@@ -71,7 +71,7 @@ def profile(request):
                 position = Position.objects.filter(vehicle=vehicle.id).latest("id")
                 vehicle_data[vehicle.id, vehicle.name] = position.address
             except Position.DoesNotExist:
-                pass
+                vehicle_data[vehicle.id, vehicle.name] = {}
             print vehicle_data
             owner_vehicles.append(vehicle_data)
     except Vehicle.DoesNotExist:
