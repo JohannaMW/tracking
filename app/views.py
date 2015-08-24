@@ -104,6 +104,8 @@ def route(request, id):
             all_positions.append(position_array)
         print all_positions
     except Position.DoesNotExist:
+        latest_position_long = None
+        latest_position_lat = None
         positions = None
     return render(request, "route.html", {
         'name': vehicle.name,
